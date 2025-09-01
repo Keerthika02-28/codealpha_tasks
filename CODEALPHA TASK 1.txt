@@ -1,0 +1,136 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+using namespace std;
+
+struct Course {
+    int id, credit, gradePoint;
+    string grade;
+};
+
+int main() {
+    // Grade to grade-point mapping
+    map<string, int> gradeMap = {
+        {"O", 10}, {"A+", 9}, {"A", 8},
+        {"B+", 7}, {"B", 6}, {"C", 5}, {"F", 0}
+    };
+
+    // ✅ Show grade scale to the user
+    cout << "----------------------------------\n";
+    cout << "        Grade to Point Scale      \n";
+    cout << "----------------------------------\n";
+    cout << "O  = 10\nA+ = 9\nA  = 8\nB+ = 7\nB  = 6\nC  = 5\nF  = 0\n";
+    cout << "----------------------------------\n\n";
+
+    int n;
+    // ✅ Ensure at least one course
+    do {
+        cout << "Enter number of courses taken: ";
+        cin >> n;
+        if (n <= 0) cout << "You must enter at least 1 course!\n";
+    } while (n <= 0);
+
+    vector<Course> courses;
+    int totalCredits = 0, totalGradePoints = 0;
+
+    for (int i = 1; i <= n; i++) {
+        string grade;
+        int credit;
+        cout << "\nEnter grade for course " << i << ": ";
+        cin >> grade;
+        cout << "Enter credit hours for course " << i << ": ";
+        cin >> credit;
+
+        int gp = gradeMap[grade] * credit;
+        totalCredits += credit;
+        totalGradePoints += gp;
+
+        courses.push_back({i, credit, gp, grade});
+    }
+
+    double gpa = (double)totalGradePoints / totalCredits;
+
+    cout << "\n--- Course Report ---\n";
+    for (auto &c : courses) {
+        cout << "Course " << c.id << ": Grade = " << c.grade 
+             << ", Credit = " << c.credit 
+             << ", Grade Points = " << c.gradePoint << endl;
+    }
+
+    cout << "\nTotal Credits: " << totalCredits;
+    cout << "\nTotal Grade Points: " << totalGradePoints;
+    cout << "\nSemester GPA: " << gpa << endl;
+
+    // ✅ Ensure at least one semester
+    int sem;
+    do {
+        cout << "\nEnter number of semesters completed: ";
+        cin >> sem;
+        if (sem <= 0) cout << "You must enter at least 1 semester!\n";
+    } while (sem <= 0);
+
+    double totalWeighted = 0;
+    int totalSemCredits = 0;
+
+    for (int i = 1; i <= sem; i++) {
+        double g;
+        int cr;
+        cout << "Enter GPA of semester " << i << ": ";
+        cin >> g;
+        cout << "Enter total credits of semester " << i << ": ";
+        cin >> cr;
+
+        totalWeighted += g * cr;
+        totalSemCredits += cr;
+    }
+
+    double cgpa = totalWeighted / totalSemCredits;
+    cout << "\nOverall CGPA: " << cgpa << endl;
+
+    return 0;
+}
+
+INPUT:3
+A
+3
+B+
+4
+O
+3
+2
+8.2
+10
+8.5
+12
+
+OUTPUT:
+----------------------------------
+        Grade to Point Scale      
+----------------------------------
+O  = 10
+A+ = 9
+A  = 8
+B+ = 7
+B  = 6
+C  = 5
+F  = 0
+----------------------------------
+
+Enter number of courses taken: 
+Enter grade for course 1: Enter credit hours for course 1: 
+Enter grade for course 2: Enter credit hours for course 2: 
+Enter grade for course 3: Enter credit hours for course 3: 
+--- Course Report ---
+Course 1: Grade = A, Credit = 3, Grade Points = 24
+Course 2: Grade = B+, Credit = 4, Grade Points = 28
+Course 3: Grade = O, Credit = 3, Grade Points = 30
+
+Total Credits: 10
+Total Grade Points: 82
+Semester GPA: 8.2
+
+Enter number of semesters completed: Enter GPA of semester 1: Enter total credits of semester 1: Enter GPA of semester 2: Enter total credits of semester 2: 
+Overall CGPA: 8.36364
+
+
