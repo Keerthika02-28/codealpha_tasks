@@ -1,0 +1,107 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+bool usernameExists(string username) {
+    ifstream file("users.txt");
+    string storedUser, storedPass;
+    while (file >> storedUser >> storedPass) {
+        if (storedUser == username) {
+            return true; // username already exists
+        }
+    }
+    return false;
+}
+void registerUser() {
+    string username, password;
+    cout << "\n===== User Registration =====" << endl;
+    cout << "Enter new username: ";
+    cin >> username;
+    if (usernameExists(username)) {
+        cout << "Error: Username already exists. Try another one." << endl;
+        return;
+    }
+    cout << "Enter new password: ";
+    cin >> password;
+    ofstream file("users.txt", ios::app); // append to file
+    file << username << " " << password << endl;
+    file.close();
+    cout << "Registration successful!" << endl;
+}
+void loginUser() {
+    string username, password;
+    string storedUser, storedPass;
+    bool loginSuccess = false;
+    cout << "\n===== User Login =====" << endl;
+    cout << "Enter username: ";
+    cin >> username;
+    cout << "Enter password: ";
+    cin >> password;
+    ifstream file("users.txt");
+    while (file >> storedUser >> storedPass) {
+        if (storedUser == username && storedPass == password) {
+            loginSuccess = true;
+            break;
+        }
+    }
+    file.close();
+    if (loginSuccess) {
+        cout << "Login successful! Welcome, " << username << "!" << endl;
+    } else {
+        cout << "Login failed: Incorrect username or password." << endl;
+    }
+}
+
+int main() {
+    int choice;
+    do {
+        cout << "\n===== LOGIN & REGISTRATION MENU =====" << endl;
+        cout << "1. Register" << endl;
+        cout << "2. Login" << endl;
+        cout << "3. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        if (choice == 1) {
+            registerUser();
+        } else if (choice == 2) {
+            loginUser();
+        } else if (choice == 3) {
+            cout << "Exiting program. Goodbye!" << endl;
+        } else {
+            cout << "Invalid choice. Please enter 1, 2, or 3." << endl;
+        }
+
+    } while (choice != 3);
+    return 0;
+}
+
+output:
+
+===== LOGIN & REGISTRATION MENU =====
+1. Register
+2. Login
+3. Exit
+Enter your choice: 1
+
+===== User Registration =====
+Enter new username: KEERTHIKA 
+Enter new password: MAMMU07
+Registration successful!
+
+===== LOGIN & REGISTRATION MENU =====
+1. Register
+2. Login
+3. Exit
+Enter your choice: 2
+
+===== User Login =====
+Enter username: KEERTHIKA
+Enter password: MAMMU07
+Login failed: Incorrect username or password.
+
+===== LOGIN & REGISTRATION MENU =====
+1. Register
+2. Login
+3. Exit
+Enter your choice: 3
+Exiting program. Goodbye!
